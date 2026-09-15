@@ -233,7 +233,9 @@ button{font-family:inherit;}
   position:relative;
   z-index:1;
   width:100%; height:100%;
-  object-fit:cover;
+  object-fit:contain;
+  background:var(--card);
+  padding:10px;
 }
 .product-tag{
   position:absolute;
@@ -244,6 +246,7 @@ button{font-family:inherit;}
   font-size:0.74rem;
   font-weight:600;
   letter-spacing:0.02em;
+  z-index:2;
 }
 .image-number{
   position:absolute;
@@ -254,6 +257,7 @@ button{font-family:inherit;}
   border-radius:12px;
   font-size:0.74rem;
   line-height:1.4;
+  z-index:2;
 }
 .product-info{
   padding:20px 20px 22px;
@@ -305,6 +309,12 @@ button{font-family:inherit;}
 .download-button:hover{ background:var(--moss-deep); }
 .download-button:active{ transform:scale(0.97); }
 .download-button.done{ background:var(--moss); }
+.download-button.out-of-stock{
+  background:var(--line);
+  color:var(--ink-soft);
+  cursor:not-allowed;
+  pointer-events:none;
+}
 
 .empty-state{
   text-align:center;
