@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activeFilter = 'all';
 
+  // --- Mark out-of-stock buttons so they can't be clicked ---
+  grid.querySelectorAll('.download-button').forEach((btn) => {
+    if (btn.textContent.toUpperCase().includes('NO IN STOCK')) {
+      btn.classList.add('out-of-stock');
+      btn.removeAttribute('href');
+    }
+  });
+
   // --- Filter dropdown open/close ---
   filterButton.addEventListener('click', () => {
     const isOpen = filterMenu.classList.toggle('open');
@@ -90,14 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
     specsOverlay.classList.remove('open');
   }
 
-  grid.querySelectorAll('a.download-button[data-specs]').forEach((link) => {
+  grid.querySelectorAll('a.download-button[data-specs]:not(.out-of-stock)').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       specsTitle.textContent = link.dataset.name || 'This product';
       if (link.dataset.specsList) {
         specsLine.innerHTML = `<ul class="specs-list">${link.dataset.specsList.split('|').map((spec) => `<li>${spec}</li>`).join('')}</ul>`;
       } else {
-        specsLine.textContent = link.dataset.specs || '';
+        specsLine.textContent = (link.dataset.specs || '').replace(/\\n/g, '\n');
       }
       specsConfirm.href = link.getAttribute('href');
       specsConfirm.setAttribute('download', link.getAttribute('download') || '');
