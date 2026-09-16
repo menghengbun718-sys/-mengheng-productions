@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // --- PDFs open in a new tab for preview instead of forcing a download ---
+  grid.querySelectorAll('.download-button[href$=".pdf" i]').forEach((btn) => {
+    btn.removeAttribute('download');
+    btn.setAttribute('target', '_blank');
+    btn.setAttribute('rel', 'noopener noreferrer');
+  });
+
   // --- Filter dropdown open/close ---
   filterButton.addEventListener('click', () => {
     const isOpen = filterMenu.classList.toggle('open');
@@ -108,7 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
         specsLine.textContent = (link.dataset.specs || '').replace(/\\n/g, '\n');
       }
       specsConfirm.href = link.getAttribute('href');
-      specsConfirm.setAttribute('download', link.getAttribute('download') || '');
+      const isPdf = /\.pdf$/i.test(link.getAttribute('href') || '');
+      if (isPdf) {
+        specsConfirm.removeAttribute('download');
+        specsConfirm.setAttribute('target', '_blank');
+        specsConfirm.setAttribute('rel', 'noopener noreferrer');
+      } else {
+        specsConfirm.setAttribute('download', link.getAttribute('download') || '');
+        specsConfirm.removeAttribute('target');
+        specsConfirm.removeAttribute('rel');
+      }
       specsOverlay.classList.add('open');
     });
   });
